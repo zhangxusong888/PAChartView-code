@@ -87,7 +87,6 @@
         label.textColor = UIColorFromRGB(kXAxisColor);
         label.textAlignment = NSTextAlignmentCenter;
         label.font = [UIFont systemFontOfSize:kXAxisFontSize];
-//        label.backgroundColor = [UIColor greenColor];
         [self addSubview:label];
     }
 }
@@ -102,7 +101,6 @@
         CGFloat value = self.plotMin + (valueStep * i);
         NSString *text = [NSString stringWithFormat:@"%0.3f", value];
         CGFloat x = self.plotFrame.origin.x - kYAxisOffsetX - kYAxisWidth;
-//        CGFloat y = top + height - (kYAxisHeight / 2) - (step * i);
         CGFloat y = top + height - kYAxisHeight - (step * i);
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(x, y, kYAxisWidth, kYAxisHeight)];
@@ -110,7 +108,6 @@
         label.textColor = UIColorFromRGB(kYAxisColor);
         label.textAlignment = NSTextAlignmentRight;
         label.font = [UIFont systemFontOfSize:kYAxisFontSize];
-//        label.backgroundColor = [UIColor greenColor];
         [self addSubview:label];
     }
 }

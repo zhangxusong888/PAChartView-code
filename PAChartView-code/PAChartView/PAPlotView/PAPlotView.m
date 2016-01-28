@@ -11,6 +11,9 @@
 #import "PAPathLayer.h"
 #import "PAMarkLayer.h"
 
+#define kDefultRow            6
+#define kDefultColumn         6
+
 @interface PAPlotView ()
 // 数据以及数据的上下限
 @property (assign, nonatomic) CGFloat min;
@@ -95,7 +98,7 @@
     if (nil == self.gridLayer) {
         // 这里要取frame，所以先更新一下autolayout，防止数据是旧的
         [self layoutIfNeeded];
-        self.gridLayer = [[PAGridLayer alloc] initWithFrame:self.bounds];
+        self.gridLayer = [[PAGridLayer alloc] initWithFrame:self.bounds row:kDefultRow column:kDefultColumn];
         [self.layer addSublayer:self.gridLayer];
     }    
 }

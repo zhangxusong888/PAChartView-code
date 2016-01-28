@@ -10,6 +10,8 @@
 
 @interface PAGridLayer : CAShapeLayer
 
-- (instancetype)initWithFrame:(CGRect)frame;
+- (instancetype)initWithFrame:(CGRect)frame
+                          row:(NSInteger)row
+                       column:(NSInteger)column;
 
 @end

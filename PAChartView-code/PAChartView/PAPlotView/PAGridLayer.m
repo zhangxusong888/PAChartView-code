@@ -20,11 +20,6 @@
 @implementation PAGridLayer
 
 // MARK: Public Functions
-- (instancetype)initWithFrame:(CGRect)frame {
-    return [self initWithFrame:frame row:kDefultRow column:kDefultColumn];
-}
-
-// 隐藏的接口函数，不对外提供
 - (instancetype)initWithFrame:(CGRect)frame
                           row:(NSInteger)row
                        column:(NSInteger)column {
@@ -35,6 +30,10 @@
         [self drawTableLayerWithRow:row column:column];
     }
     return self;
+}
+
+- (instancetype)initWithFrame:(CGRect)frame {
+    return [self initWithFrame:frame row:kDefultRow column:kDefultColumn];
 }
 
 // MARK: Private Funtions
