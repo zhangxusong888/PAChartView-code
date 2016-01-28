@@ -10,8 +10,8 @@
 #import <UIKit/UIKit.h>
 #import "PATheme.h"
 
-#define  kDiam        10.0
-#define  kLineWidth   3.0
+#define  kDiam               7.0
+#define  kLineWidth          2.0
 
 #define  kStokeColor         0xff0000
 #define  kFillColor          0xffffff

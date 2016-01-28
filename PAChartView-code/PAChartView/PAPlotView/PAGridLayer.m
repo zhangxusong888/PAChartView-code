@@ -10,11 +10,12 @@
 #import "PATheme.h"
 #import <UIKit/UIKit.h>
 
-#define kDefultRow            5
+#define kDefultRow            6
 #define kDefultColumn         6
 
-#define kBarColor             [UIColorFromRGB(0xa8ffff) CGColor]
-#define kTableLineColor       [UIColorFromRGB(0xcccccc) CGColor]
+#define kBarColor             [UIColorFromRGB(0xfffcfc) CGColor]
+#define kTableLineColor       [UIColorFromRGB(0xeeeeee) CGColor]
+#define kLineWidth            0.5
 
 @implementation PAGridLayer
 
@@ -89,7 +90,7 @@
     tableLayer.frame = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);;
     tableLayer.path = tablePath.CGPath;
     tableLayer.strokeColor = kTableLineColor;
-    tableLayer.lineWidth = 1;
+    tableLayer.lineWidth = kLineWidth;
     [self addSublayer:tableLayer];
 }
 

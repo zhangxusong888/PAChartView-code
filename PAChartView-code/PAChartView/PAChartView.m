@@ -10,19 +10,19 @@
 #import "PAPlotView.h"
 #import "PATheme.h"
 
-#define kYAxisRowCount  5
+#define kYAxisRowCount  6
 
-#define kYAxisOffsetX   12
-#define kYAxisWidth     40
-#define kYAxisHeight    20
-#define kYAxisFontSize  12
-#define kYAxisColor     0x008800
+#define kYAxisOffsetX   4           // 与plot view 左边界的偏移
+#define kYAxisWidth     30
+#define kYAxisHeight    8
+#define kYAxisFontSize  kYAxisHeight
+#define kYAxisColor     0x9b9b9b
 
-#define kXAxisOffsetY   8
+#define kXAxisOffsetY   2           // 与plot view 下边界的偏移
 #define kXAxisWidth     40
-#define kXAxisHeight    20
-#define kXAxisFontSize  12
-#define kXAxisColor     0x000088
+#define kXAxisHeight    8
+#define kXAxisFontSize  kXAxisHeight
+#define kXAxisColor     0x9b9b9b
 
 @interface PAChartView ()
 
@@ -31,6 +31,7 @@
 @property (assign, nonatomic) CGFloat plotMax;
 @property (strong, nonatomic) NSArray *datas;
 @property (strong, nonatomic) NSArray *titles;
+@property (assign, nonatomic) BOOL isXAxisCenter;
 
 @end
 
@@ -57,6 +58,8 @@
         // axis texts
         [self addXAxisTexts];
         [self addYAxisTexts];
+        // X 坐标是否居中，目前固定为不居中，从左侧开始
+        self.isXAxisCenter = false;
     }
     return self;
 }
@@ -69,6 +72,9 @@
     NSInteger count = self.titles.count;
     CGFloat step = self.plotFrame.size.width / count;
     CGFloat halfStep = step / 2;
+    if (!self.isXAxisCenter) {
+        halfStep = 0;
+    }
     CGFloat offset = left + halfStep - (kXAxisWidth / 2);
     
     for (NSInteger i = 0; i < count; i++) {
@@ -81,6 +87,7 @@
         label.textColor = UIColorFromRGB(kXAxisColor);
         label.textAlignment = NSTextAlignmentCenter;
         label.font = [UIFont systemFontOfSize:kXAxisFontSize];
+//        label.backgroundColor = [UIColor greenColor];
         [self addSubview:label];
     }
 }
@@ -93,16 +100,17 @@
     
     for (NSInteger i = 0; i <= kYAxisRowCount; i++) {
         CGFloat value = self.plotMin + (valueStep * i);
-        NSString *text = [NSString stringWithFormat:@"%0.2f", value];
-        CGFloat x = kYAxisOffsetX;
-        CGFloat y = top + height - (kYAxisHeight / 2) - (step * i);
+        NSString *text = [NSString stringWithFormat:@"%0.3f", value];
+        CGFloat x = self.plotFrame.origin.x - kYAxisOffsetX - kYAxisWidth;
+//        CGFloat y = top + height - (kYAxisHeight / 2) - (step * i);
+        CGFloat y = top + height - kYAxisHeight - (step * i);
         
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(x, y, kYAxisWidth, kYAxisHeight)];
         label.text = text;
         label.textColor = UIColorFromRGB(kYAxisColor);
         label.textAlignment = NSTextAlignmentRight;
         label.font = [UIFont systemFontOfSize:kYAxisFontSize];
-        [label sizeToFit];
+//        label.backgroundColor = [UIColor greenColor];
         [self addSubview:label];
     }
 }

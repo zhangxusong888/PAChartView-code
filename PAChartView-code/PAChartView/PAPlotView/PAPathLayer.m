@@ -10,8 +10,10 @@
 #import "PATheme.h"
 #import <UIKit/UIKit.h>
 
-#define kStartColor             0x88ff88
-#define kEndLineColor           0xff8888
+#define kStartColor             0xffd607
+#define kEndLineColor           0xf22d47
+
+#define kLineWidth              2
 
 @implementation PAPathLayer
 
@@ -30,7 +32,7 @@
         CAShapeLayer *lineLayer = [CAShapeLayer layer];
         lineLayer.frame = CGRectMake(0, 0, frame.size.width, frame.size.height);
         lineLayer.path = [self drawLineWithXAxisArray:xValues yAxisArray:yValues];
-        lineLayer.lineWidth = 4.0;
+        lineLayer.lineWidth = kLineWidth;
         lineLayer.strokeColor = [[UIColor blackColor] CGColor];
         self.mask = lineLayer;
     }

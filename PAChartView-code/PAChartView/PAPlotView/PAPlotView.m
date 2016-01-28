@@ -24,6 +24,8 @@
 @property (strong, nonatomic) PAGridLayer *gridLayer;
 @property (strong, nonatomic) PAPathLayer *pathLayer;
 @property (strong, nonatomic) PAMarkLayer *markLayer;
+// X 坐标是否居中，目前固定为不居中，从左侧开始
+@property (assign, nonatomic) BOOL isXAxisCenter;
 
 @end
 
@@ -53,15 +55,36 @@
                 break;
         }
         [self loadAllLayers];
+        // X 坐标是否居中，目前固定为不居中，从左侧开始
+        self.isXAxisCenter = false;
     }
     return self;
 }
 
+- (void)updatePlotWithDatas:(NSArray *)datas {
+    if (nil == datas) {
+        return;
+    }
+    self.datas = [NSArray arrayWithArray:datas];
+    [self reloadAllLayers];
+}
+
 // MARK: Private Fucntions
+- (void)reloadAllLayers {
+    [self removeAllLayers];
+    [self loadAllLayers];
+}
+
 - (void)loadAllLayers {
     [self loadPAGridLayer];
     [self loadPAPathLayer];
     [self loadPAMarkLayer];
+}
+
+- (void)removeAllLayers {
+    [self removePAGridLayer];
+    [self removePAPathLayer];
+    [self removePAMarkLayer];
 }
 
 // grid layer
@@ -77,6 +100,13 @@
     }    
 }
 
+- (void)removePAGridLayer {
+    if (nil != self.gridLayer) {
+        [self.gridLayer removeFromSuperlayer];
+        self.gridLayer = nil;
+    }
+}
+
 // path layer
 - (void)loadPAPathLayer {
     if (nil == self.pathLayer) {
@@ -86,6 +116,13 @@
         NSArray *yValues = [self generateYAxisArray];
         self.pathLayer = [[PAPathLayer alloc] initWithFrame:self.bounds xAxisArray:xValues yAxisArray:yValues];
         [self.layer addSublayer:self.pathLayer];
+    }
+}
+
+- (void)removePAPathLayer {
+    if (nil != self.pathLayer) {
+        [self.pathLayer removeFromSuperlayer];
+        self.pathLayer = nil;
     }
 }
 
@@ -101,11 +138,21 @@
     }
 }
 
+- (void)removePAMarkLayer {
+    if (nil != self.markLayer) {
+        [self.markLayer removeFromSuperlayer];
+        self.markLayer = nil;
+    }
+}
+
 // 转换数据为layer的坐标
 - (NSArray *)generateXAxisArray {
     NSMutableArray *xAxisArray = [NSMutableArray array];
     CGFloat step = self.frame.size.width / self.datas.count;
     CGFloat halfStep = step / 2;
+    if (!self.isXAxisCenter) {
+        halfStep = 0;
+    }
     
     for (NSInteger i = 0; i < self.datas.count; i++) {
         CGFloat value = halfStep + (step * i);
