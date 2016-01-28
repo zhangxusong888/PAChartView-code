@@ -27,9 +27,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
-//    [self addPlotView];
-//    [self addChartView];
+
 }
 
 // Action
@@ -51,14 +49,12 @@
 
 - (void)addChartView {
     CGRect frame = CGRectMake(20, 320, 360, 180);
-    CGRect plotFrame = CGRectMake(40, 20, 300, 137);
     CGFloat min = 4.3;
     CGFloat max = 5.5;
     NSArray *datas = @[@4.6, @4.8, @5.2, @4.9, @5.1, @5.3];
     NSArray *titles = @[@"10.21", @"10.22", @"10.23", @"10.24", @"10.25", @"10.26"];
     
-    PAChartView *chartView = [[PAChartView alloc] initWithFrame:frame plotFrame:plotFrame plotMin:min plotMax:max datas:datas titles:titles];
-//    chartView.backgroundColor = [UIColor lightGrayColor];
+    PAChartView *chartView = [[PAChartView alloc] initWithFrame:frame plotMin:min plotMax:max datas:datas titles:titles];
     [self.view addSubview:chartView];
 }
 

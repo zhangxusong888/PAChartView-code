@@ -10,15 +10,20 @@
 #import "PAPlotView.h"
 #import "PATheme.h"
 
+#define kMarginTop      15
+#define kMarginBottom   15
+#define kMarginLeft     40
+#define kMarginRight    20
+
 #define kYAxisRowCount  6
 
-#define kYAxisOffsetX   4           // 与plot view 左边界的偏移
+#define kYAxisOffsetX   6           // 与plot view 左边界的偏移
 #define kYAxisWidth     30
 #define kYAxisHeight    8
 #define kYAxisFontSize  kYAxisHeight
 #define kYAxisColor     0x9b9b9b
 
-#define kXAxisOffsetY   2           // 与plot view 下边界的偏移
+#define kXAxisOffsetY   4           // 与plot view 下边界的偏移
 #define kXAxisWidth     40
 #define kXAxisHeight    8
 #define kXAxisFontSize  kXAxisHeight
@@ -39,7 +44,6 @@
 
 // MARK: Public Functions
 - (instancetype)initWithFrame:(CGRect)frame
-                    plotFrame:(CGRect)plotFrame
                       plotMin:(CGFloat)plotMin
                       plotMax:(CGFloat)plotMax
                         datas:(NSArray *)datas
@@ -47,13 +51,15 @@
     self = [super init];
     if (self) {
         self.frame = frame;
-        self.plotFrame = plotFrame;
+        CGFloat width = frame.size.width - kMarginLeft - kMarginRight;
+        CGFloat height = frame.size.height - kMarginTop - kMarginBottom;
+        self.plotFrame = CGRectMake(kMarginLeft, kMarginTop, width, height);
         self.plotMin = plotMin;
         self.plotMax = plotMax;
         self.datas = [NSArray arrayWithArray:datas];
         self.titles = [NSArray arrayWithArray:titles];
         // plot view
-        PAPlotView *plotView = [[PAPlotView alloc] initWithFrame:plotFrame min:plotMin max:plotMax datas:datas type:PAPlotTypeTheLastOneWithGrid];
+        PAPlotView *plotView = [[PAPlotView alloc] initWithFrame:self.plotFrame min:plotMin max:plotMax datas:datas type:PAPlotTypeTheLastOneWithGrid];
         [self addSubview:plotView];
         // axis texts
         [self addXAxisTexts];
