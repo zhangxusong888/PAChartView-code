@@ -32,6 +32,17 @@
  *  更新折线图
  *
  *  @param datas 新的数据点
+ *  @param min   坐标最小值，数据下限
+ *  @param max   坐标最大值，数据上限
+ */
+- (void)updatePlotWithDatas:(NSArray *)datas
+                        min:(CGFloat)min
+                        max:(CGFloat)max;
+
+/**
+ *  更新折线图
+ *
+ *  @param datas 新的数据点
  */
 - (void)updatePlotWithDatas:(NSArray *)datas;
 

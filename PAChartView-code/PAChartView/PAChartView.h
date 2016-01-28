@@ -27,4 +27,17 @@
                         datas:(NSArray *)datas
                        titles:(NSArray *)titles;
 
+/**
+ *  更新带坐标轴的折线图表
+ *
+ *  @param min     折线图的数据下限
+ *  @param max     折线图的数据上限
+ *  @param datas   数据
+ *  @param titiles 文字
+ */
+- (void)updateChartWithMin:(CGFloat)min
+                       max:(CGFloat)max
+                     datas:(NSArray *)datas
+                    titles:(NSArray *)titiles;
+
 @end

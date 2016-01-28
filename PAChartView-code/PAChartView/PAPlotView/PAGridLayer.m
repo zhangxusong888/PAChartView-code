@@ -10,9 +10,6 @@
 #import "PATheme.h"
 #import <UIKit/UIKit.h>
 
-#define kDefultRow            6
-#define kDefultColumn         6
-
 #define kBarColor             [UIColorFromRGB(0xfffcfc) CGColor]
 #define kTableLineColor       [UIColorFromRGB(0xeeeeee) CGColor]
 #define kLineWidth            0.5
@@ -30,10 +27,6 @@
         [self drawTableLayerWithRow:row column:column];
     }
     return self;
-}
-
-- (instancetype)initWithFrame:(CGRect)frame {
-    return [self initWithFrame:frame row:kDefultRow column:kDefultColumn];
 }
 
 // MARK: Private Funtions

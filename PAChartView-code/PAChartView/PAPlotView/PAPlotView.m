@@ -65,8 +65,23 @@
 }
 
 - (void)updatePlotWithDatas:(NSArray *)datas {
+    [self updatePlotWithDatas:datas min:self.min max:self.max];
+}
+
+- (void)updatePlotWithDatas:(NSArray *)datas
+                        min:(CGFloat)min
+                        max:(CGFloat)max {
     if (nil == datas) {
         return;
+    }
+    if (min >= max) {
+        return;
+    }
+    if (min != self.min) {
+        self.min = min;
+    }
+    if (max != self.max) {
+        self.max = max;
     }
     self.datas = [NSArray arrayWithArray:datas];
     [self reloadAllLayers];
@@ -98,7 +113,11 @@
     if (nil == self.gridLayer) {
         // 这里要取frame，所以先更新一下autolayout，防止数据是旧的
         [self layoutIfNeeded];
-        self.gridLayer = [[PAGridLayer alloc] initWithFrame:self.bounds row:kDefultRow column:kDefultColumn];
+        NSInteger column = self.datas.count;
+        if (column <= 0) {
+            column = kDefultColumn;
+        }
+        self.gridLayer = [[PAGridLayer alloc] initWithFrame:self.bounds row:kDefultRow column:column];
         [self.layer addSublayer:self.gridLayer];
     }    
 }

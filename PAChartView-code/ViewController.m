@@ -13,6 +13,7 @@
 @interface ViewController ()
 
 @property (strong, nonatomic) PAPlotView *plotView;
+@property (strong, nonatomic) PAChartView *chartView;
 
 @end
 
@@ -27,13 +28,16 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-
 }
 
 // Action
 - (IBAction)testButtonTouched:(UIButton *)sender {
-    NSArray *datas = @[@4.6, @4.8, @5.2, @5.1, @5.3, @5.2];
-    [self.plotView updatePlotWithDatas:datas];
+    CGFloat min = 3.5;
+    CGFloat max = 6.5;
+    NSArray *datas = @[@4.6, @4.8, @5.2, @4.9, @5.1, @5.3];
+    NSArray *titles = @[@"9-21", @"9-22", @"9-23", @"9-24", @"9-25", @"9-26"];
+    [self.plotView updatePlotWithDatas:datas min:min max:max];
+    [self.chartView updateChartWithMin:min max:max datas:datas titles:titles];
 }
 
 // Private Functions
@@ -54,8 +58,8 @@
     NSArray *datas = @[@4.6, @4.8, @5.2, @4.9, @5.1, @5.3];
     NSArray *titles = @[@"10.21", @"10.22", @"10.23", @"10.24", @"10.25", @"10.26"];
     
-    PAChartView *chartView = [[PAChartView alloc] initWithFrame:frame plotMin:min plotMax:max datas:datas titles:titles];
-    [self.view addSubview:chartView];
+    self.chartView = [[PAChartView alloc] initWithFrame:frame plotMin:min plotMax:max datas:datas titles:titles];
+    [self.view addSubview:self.chartView];
 }
 
 @end

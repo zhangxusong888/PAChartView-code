@@ -29,6 +29,9 @@
 #define kXAxisFontSize  kXAxisHeight
 #define kXAxisColor     0x9b9b9b
 
+#define kLabelBaseTagX  1000
+#define kLabelBaseTagY  2000
+
 @interface PAChartView ()
 
 @property (assign, nonatomic) CGRect plotFrame;
@@ -37,6 +40,7 @@
 @property (strong, nonatomic) NSArray *datas;
 @property (strong, nonatomic) NSArray *titles;
 @property (assign, nonatomic) BOOL isXAxisCenter;
+@property (strong, nonatomic) PAPlotView *plotView;
 
 @end
 
@@ -59,8 +63,8 @@
         self.datas = [NSArray arrayWithArray:datas];
         self.titles = [NSArray arrayWithArray:titles];
         // plot view
-        PAPlotView *plotView = [[PAPlotView alloc] initWithFrame:self.plotFrame min:plotMin max:plotMax datas:datas type:PAPlotTypeTheLastOneWithGrid];
-        [self addSubview:plotView];
+        self.plotView = [[PAPlotView alloc] initWithFrame:self.plotFrame min:plotMin max:plotMax datas:datas type:PAPlotTypeTheLastOneWithGrid];
+        [self addSubview:self.plotView];
         // axis texts
         [self addXAxisTexts];
         [self addYAxisTexts];
@@ -68,6 +72,26 @@
         self.isXAxisCenter = false;
     }
     return self;
+}
+
+- (void)updateChartWithMin:(CGFloat)min
+                       max:(CGFloat)max
+                     datas:(NSArray *)datas
+                    titles:(NSArray *)titiles {
+    if ((min >= max) || (nil == datas) || (nil == titiles)) {
+        return;
+    }
+    // titles变少了，会有部分label改不掉；titles变多了，会有一些tag的label根本就不存在
+    if (titiles.count != self.titles.count) {
+        return;
+    }
+    self.plotMin = min;
+    self.plotMax = max;
+    self.datas = [NSArray arrayWithArray:datas];
+    self.titles = [NSArray arrayWithArray:titiles];
+    [self updateLabelTextX];
+    [self updateLabelTextY];
+    [self.plotView updatePlotWithDatas:self.datas min:self.plotMin max:self.plotMax];
 }
 
 // MARK: Private Functions
@@ -93,7 +117,18 @@
         label.textColor = UIColorFromRGB(kXAxisColor);
         label.textAlignment = NSTextAlignmentCenter;
         label.font = [UIFont systemFontOfSize:kXAxisFontSize];
+        label.tag = kLabelBaseTagX + i;
         [self addSubview:label];
+    }
+}
+
+- (void)updateLabelTextX {
+    NSInteger count = self.titles.count;
+    for (NSInteger i = 0; i < count; i++) {
+        NSString *text = self.titles[i];
+        NSInteger tag = kLabelBaseTagX + i;
+        UILabel *label = (UILabel *)[self viewWithTag:tag];
+        label.text = text;
     }
 }
 
@@ -114,7 +149,19 @@
         label.textColor = UIColorFromRGB(kYAxisColor);
         label.textAlignment = NSTextAlignmentRight;
         label.font = [UIFont systemFontOfSize:kYAxisFontSize];
+        label.tag = kLabelBaseTagY + i;
         [self addSubview:label];
+    }
+}
+
+- (void)updateLabelTextY {
+    CGFloat valueStep = (self.plotMax - self.plotMin) / kYAxisRowCount;
+    for (NSInteger i = 0; i <= kYAxisRowCount; i++) {
+        CGFloat value = self.plotMin + (valueStep * i);
+        NSString *text = [NSString stringWithFormat:@"%0.3f", value];
+        NSInteger tag = kLabelBaseTagY + i;
+        UILabel *label = (UILabel *)[self viewWithTag:tag];
+        label.text = text;
     }
 }
 
